@@ -1,0 +1,15 @@
+[Unit]
+Description = "A Service to make infoboard accessible"
+After = network.target
+
+[Service]
+Type=simple
+ExecStart = 
+User = infoboard
+Restart = on-failure
+SyslogIdentifier = 
+RestartSec = 5
+TimeoutStartSec = infinity
+
+[Install]
+WantedBy=multi-user.target

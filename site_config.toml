@@ -1,0 +1,7 @@
+
+sites = [
+    {duration = 1, path = "spam/"},
+    {duration = 2, path = "eggs/"},
+    {duration = 2, path = "spam-eggs/"},
+]
+

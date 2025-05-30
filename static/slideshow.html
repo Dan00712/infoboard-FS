@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<script>
+    const url = "/sites.json"
+    fetch(url)
+     .then(res => res.json())
+     .then(out => {
+        console.log(out)
+        ul = document.getElementById("foo")
+        for (let i = 0; i < out.length; i++) {
+            var cur = out[i];
+
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.appendChild(document.createTextNode(cur.path));
+            a.href = cur.path + "index.html";
+            li.appendChild(a);
+            ul.appendChild(li);
+         }
+     })
+     .catch(err => console.log(err))
+</script>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+<ul id="foo"/>
+
+</body>
+</html> 
