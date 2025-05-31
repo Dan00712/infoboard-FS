@@ -4,30 +4,50 @@
 <title>Page Title</title>
 </head>
 <script>
-    const url = "/sites.json"
-    fetch(url)
-     .then(res => res.json())
-     .then(out => {
-        console.log(out)
-        ul = document.getElementById("foo")
-        for (let i = 0; i < out.length; i++) {
-            var cur = out[i];
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
 
-            var li = document.createElement("li");
-            var a = document.createElement("a");
-            a.appendChild(document.createTextNode(cur.path));
-            a.href = cur.path + "index.html";
-            li.appendChild(a);
-            ul.appendChild(li);
-         }
-     })
-     .catch(err => console.log(err))
+    const url = "/sites.json"
+    var sites = []
+    async function update_sites(){
+        await fetch(url)
+            .then(res => res.json())
+            .then(out => {
+                ul = document.getElementById("foo")
+                for (let i = 0; i < out.length; i++) {
+                    var cur = out[i];
+                    cur.path += "index.html"
+                    sites.push(cur)
+
+                    //var li = document.createElement("li");
+                    //var a = document.createElement("a");
+                    //a.appendChild(document.createTextNode(cur.path));
+                    //a.href = cur.path + "index.html";
+                    //li.appendChild(a);
+                    //ul.appendChild(li);
+                }
+            })
+            .catch(err => console.log(err))
+            return sites
+    }
 </script>
 <body>
+    <iframe id="pane" width="100%" height="500" style="border: none;"></iframe>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
-<ul id="foo"/>
-
+    <script>
+    const updating_sites = setInterval(update_sites, 5 * 60*1000);
+    (async ()=> {
+        await update_sites();
+        while(true) { 
+            const iframe = document.getElementById("pane");
+            for (var i = 0; i < sites.length; i++) {
+                console.log("current site: ", sites[i])
+                iframe.setAttribute("src", sites[i].path)
+                await sleep(1000* sites[i].duration_sec)
+            }
+        }
+    })()
+    </script>
 </body>
-</html> 
+</html>
